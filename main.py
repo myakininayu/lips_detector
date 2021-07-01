@@ -1,11 +1,18 @@
 import cv2
 
 # Подключить каскад для поиска губ
-mouth_cascade = cv2.CascadeClassifier('haarcascade_mcs_mouth.xml')
+def connectCascade(cascadeName):
+    mouth_cascade = cv2.CascadeClassifier('haarcascade_mcs_mouth.xml')
+    #mouth_cascade = cv2.CascadeClassifier(cv2.data.haarcascades+"haarcascade_eye.xml")
 
-# Если каскад не был найден
-if mouth_cascade.empty():
-    raise IOError('Unable to load the mouth cascade classifier xml file')
+    # Если каскад не был найден
+    if mouth_cascade.empty():
+        raise IOError('Unable to load the mouth cascade classifier xml file')
+    return mouth_cascade
+
+
+# Подключить каскад для поиска губ
+mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
 
 # Подключение камеры
 cap = cv2.VideoCapture(0)
