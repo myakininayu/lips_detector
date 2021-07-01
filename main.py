@@ -10,16 +10,8 @@ def connectCascade(cascadeName):
         raise IOError('Unable to load the mouth cascade classifier xml file')
     return mouth_cascade
 
-
-# Подключить каскад для поиска губ
-mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
-
-# Подключение камеры
-cap = cv2.VideoCapture(0)
-
-# Цикл для постоянного считывания с камеры
-while True:
-    ret, frame = cap.read()
+# Распознать губы
+def findLips(mouth_cascade, frame):
     # Перевод изображения в чб формат
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -35,6 +27,19 @@ while True:
 
     # Показать кадр
     cv2.imshow('Mouth Detector', frame)
+
+
+# Подключить каскад для поиска губ
+mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
+
+# Подключение камеры
+cap = cv2.VideoCapture(0)
+
+# Цикл для постоянного считывания с камеры
+while True:
+    ret, frame = cap.read()
+    # Распознать губы
+    findLips(mouth_cascade, frame)
 
     # Закрытие окна при нажатии Esc
     c = cv2.waitKey(1)
