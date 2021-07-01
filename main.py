@@ -1,9 +1,7 @@
 import cv2
 
-# Распознание губ на видео с вебкамеры
 # Подключить каскад для поиска губ
 mouth_cascade = cv2.CascadeClassifier('haarcascade_mcs_mouth.xml')
-# mouth_cascade = cv2.CascadeClassifier(cv2.data.haarcascades+"haarcascade_eye.xml")
 
 # Если каскад не был найден
 if mouth_cascade.empty():
@@ -15,6 +13,18 @@ cap = cv2.VideoCapture(0)
 # Цикл для постоянного считывания с камеры
 while True:
     ret, frame = cap.read()
+    # Перевод изображения в чб формат
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Распознание губ
+    mouth_rects = mouth_cascade.detectMultiScale(gray, 1.7, 11)
+
+    # Отрисовать рамку
+    # Для каждых губ
+    for (x, y, w, h) in mouth_rects:
+        # Задать рамку
+        y = int(y - 0.15 * h)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     # Показать кадр
     cv2.imshow('Mouth Detector', frame)
@@ -26,3 +36,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
