@@ -19,15 +19,18 @@ def findLips(mouth_cascade, frame):
     mouth_rects = mouth_cascade.detectMultiScale(gray, 1.7, 11)
 
     # Отрисовать рамку
+    drawFrame(frame, mouth_rects)
+
+    # Показать кадр
+    cv2.imshow('Mouth Detector', frame)
+
+# Отрисовать рамку
+def drawFrame(frame, mouth_rects):
     # Для каждых губ
     for (x, y, w, h) in mouth_rects:
         # Задать рамку
         y = int(y - 0.15 * h)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-    # Показать кадр
-    cv2.imshow('Mouth Detector', frame)
-
 
 # Подключить каскад для поиска губ
 mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
