@@ -59,6 +59,21 @@ def findLipsOnVebcam():
     cap.release()
     cv2.destroyAllWindows()
 
+
+def checkValue(event):
+    if (cb.get() == "Фото"):
+        linkLabel.pack_forget()
+        videoLink.pack_forget()
+    elif (cb.get() == "Видеофайл"):
+        linkLabel.pack_forget()
+        videoLink.pack_forget()
+    elif (cb.get() == "Видео с вебкамеры"):
+        linkLabel.pack_forget()
+        videoLink.pack_forget()
+    elif (cb.get() == "Видео по ссылке"):
+        linkLabel.pack(anchor=tk.N, side='top', pady=10)
+        videoLink.pack(anchor=tk.N, side='top', pady=10)
+
 # Создание окна
 window = tk.Tk()
 window.title('Mouth Detector')  # Задать заголовок окна
@@ -85,6 +100,7 @@ cb = ttk.Combobox(window, values=["Фото", "Видеофайл", "Видео 
 state="readonly", font=myFont, width=25)
 cb.current(2)
 cb.pack(anchor=tk.N, side='top', pady=10)
+cb.bind("<<ComboboxSelected>>", checkValue)
 
 # BUTTON
 btn = ttk.Button(window, text="Выбрать", width=44)
