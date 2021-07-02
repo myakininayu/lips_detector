@@ -24,6 +24,12 @@ def findLips(mouth_cascade, frame):
     # Показать кадр
     cv2.imshow('Mouth Detector', frame)
 
+# Закрыть окно при нажатии Esc
+def closeWindow():
+        c = cv2.waitKey(1)
+        if c == 27:
+            return True
+
 # Отрисовать рамку
 def drawFrame(frame, mouth_rects):
     # Для каждых губ
@@ -45,9 +51,7 @@ while True:
     findLips(mouth_cascade, frame)
 
     # Закрытие окна при нажатии Esc
-    c = cv2.waitKey(1)
-    if c == 27:
-        break
+    if (closeWindow()): break
 
 cap.release()
 cv2.destroyAllWindows()
