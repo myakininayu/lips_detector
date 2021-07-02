@@ -106,4 +106,5 @@ cb.bind("<<ComboboxSelected>>", checkValue)
 btn = ttk.Button(window, text="Выбрать", width=44)
 btn.pack(anchor=tk.N, side='top', pady=10)
 
+
 window.mainloop()
