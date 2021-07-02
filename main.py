@@ -38,21 +38,21 @@ def drawFrame(frame, mouth_rects):
         y = int(y - 0.15 * h)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-# Подключить каскад для поиска губ
-mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
+# Распознание губ на видео с вебкамеры
+def findLipsOnVebcam():
+    # Подключить каскад для поиска губ
+    mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
 
-# Подключение камеры
-cap = cv2.VideoCapture(0)
+    # Подключение камеры
+    cap = cv2.VideoCapture(0)
 
-# Цикл для постоянного считывания с камеры
-while True:
-    ret, frame = cap.read()
-    # Распознать губы
-    findLips(mouth_cascade, frame)
+    # Цикл для постоянного считывания с камеры
+    while True:
+        ret, frame = cap.read()
+        findLips(mouth_cascade, frame)
 
-    # Закрытие окна при нажатии Esc
-    if (closeWindow()): break
+        # Закрытие окна при нажатии Esc
+        if(closeWindow()): break
 
-cap.release()
-cv2.destroyAllWindows()
-
+    cap.release()
+    cv2.destroyAllWindows()
