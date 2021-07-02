@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import ttk
 import cv2
 
 # Подключить каскад для поиска губ
@@ -56,3 +58,36 @@ def findLipsOnVebcam():
 
     cap.release()
     cv2.destroyAllWindows()
+
+# Создание окна
+window = tk.Tk()
+window.title('Mouth Detector')  # Задать заголовок окна
+window.geometry('400x230')  # Задать размер окна
+window.wm_resizable(False, False)  # Задать запрет на изменение размера окна
+window.iconbitmap("lips_icon.ico")  # Задать иконку окна
+window.configure(background='#A44343')  # Задать фон окна
+
+# LABEL
+label = ttk.Label(window, text="Выберите формат вх.данных:", background="#FFFFFF", font="Courier 13",
+width=27)
+label.pack(anchor=tk.N, side='top', pady=10)
+
+# LABEL ССЫЛКИ
+linkLabel = ttk.Label(window, text="Вставьте ссылку:", background="#FFFFFF", font="Courier 13",
+width=27)
+
+# ПОЛЕ ССЫЛКИ
+myFont = ("Courier", 13)
+videoLink = tk.Entry(width=27, font=myFont)
+
+# COMBOBOX
+cb = ttk.Combobox(window, values=["Фото", "Видеофайл", "Видео с вебкамеры", "Видео по ссылке"],
+state="readonly", font=myFont, width=25)
+cb.current(2)
+cb.pack(anchor=tk.N, side='top', pady=10)
+
+# BUTTON
+btn = ttk.Button(window, text="Выбрать", width=44)
+btn.pack(anchor=tk.N, side='top', pady=10)
+
+window.mainloop()
