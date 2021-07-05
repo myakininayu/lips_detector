@@ -63,13 +63,29 @@ def findLipsOnPhoto(filename):
             # Закрытие окна при нажатии Esc
             if (closeWindow()): break
 
-
         cv2.destroyAllWindows()
         window.focus()
     except cv2.error:
         errorMsg = mb.showerror(
             title="Сообщение об ошибке",
             message="Некорректное название файла. Возможно, не на латинице.")
+
+# Распознание губ на видео
+def findLipsOnVideoFile(filename):
+    # Подключить каскад для поиска губ
+    mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
+
+    cap = cv2.VideoCapture(filename)
+    # Пока видео открыто
+    while cap.isOpened():
+        ret, frame = cap.read()
+        findLips(mouth_cascade, frame)
+
+        # Закрытие окна при нажатии Esc
+        if(closeWindow()): break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 # Распознание губ на видео с вебкамеры
 def findLipsOnVebcam():
