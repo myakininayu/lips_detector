@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox as mb
 import cv2
 
 # Подключить каскад для поиска губ
@@ -40,6 +41,36 @@ def drawFrame(frame, mouth_rects):
         y = int(y - 0.15 * h)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
+# Распознание губ на фото
+def findLipsOnPhoto(filename):
+    try:
+        # Подключить каскад для поиска губ
+        mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
+
+        img = cv2.imread(filename)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        # Распознание губ
+        mouth_rects = mouth_cascade.detectMultiScale(gray, 1.7, 11)
+
+        # Отрисовать рамку
+        drawFrame(img, mouth_rects)
+
+        while True:
+            # Показать изображение
+            cv2.imshow('Mouth Detector', img)
+
+            # Закрытие окна при нажатии Esc
+            if (closeWindow()): break
+
+
+        cv2.destroyAllWindows()
+        window.focus()
+    except cv2.error:
+        errorMsg = mb.showerror(
+            title="Сообщение об ошибке",
+            message="Некорректное название файла. Возможно, не на латинице.")
+
 # Распознание губ на видео с вебкамеры
 def findLipsOnVebcam():
     # Подключить каскад для поиска губ
@@ -58,7 +89,7 @@ def findLipsOnVebcam():
 
     cap.release()
     cv2.destroyAllWindows()
-
+    window.focus()
 
 def checkValue(event):
     if (cb.get() == "Фото"):
