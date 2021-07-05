@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox as mb
 import cv2
+import pafy
 
 # Подключить каскад для поиска губ
 def connectCascade(cascadeName):
@@ -106,6 +107,35 @@ def findLipsOnVebcam():
     cap.release()
     cv2.destroyAllWindows()
     window.focus()
+
+# Распознание губ на видео по ссылке
+def findLipsOnVideoLink(url):
+    try:
+        urlPafy = pafy.new(url)
+        videoplay = urlPafy.getbest()
+
+        if(urlPafy == 0):
+            print("Ошибка")
+
+        # Подключить каскад для поиска губ
+        mouth_cascade = connectCascade('haarcascade_mcs_mouth.xml')
+
+        cap = cv2.VideoCapture(videoplay.url)
+        # Пока видео открыто
+        while cap.isOpened():
+            ret, frame = cap.read()
+            findLips(mouth_cascade, frame)
+
+            # Закрытие окна при нажатии Esc
+            if(closeWindow()): break
+
+        cap.release()
+        cv2.destroyAllWindows()
+    except ValueError:
+        errorMsg = mb.showerror(
+            title="Сообщение об ошибке",
+            message="Некорректное URL видео")
+        videoLink.delete(0, 'end')
 
 def checkValue(event):
     if (cb.get() == "Фото"):
