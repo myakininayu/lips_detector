@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import tkinter.filedialog as fd
 from tkinter import messagebox as mb
 import cv2
 import pafy
@@ -137,6 +138,24 @@ def findLipsOnVideoLink(url):
             message="Некорректное URL видео")
         videoLink.delete(0, 'end')
 
+# Получить режим обработки
+def getRes():
+    if(cb.get() == "Фото"):
+        filetypes = (("Изображение", "*.jpg *.gif *.png"), ("Любой", "*"))
+        filename = fd.askopenfilename(title="Открыть файл", initialdir="/",
+                                      filetypes=filetypes)
+        findLipsOnPhoto(filename)
+    elif(cb.get() == "Видеофайл"):
+        filetypes = (("Видеофайл", "*.avi *.mp4"), ("Любой", "*"))
+        filename = fd.askopenfilename(title="Открыть файл", initialdir="/",
+                                      filetypes=filetypes)
+        findLipsOnVideoFile(filename)
+    elif(cb.get() == "Видео с вебкамеры"):
+        findLipsOnVebcam()
+    elif (cb.get() == "Видео по ссылке"):
+        link = videoLink.get()
+        findLipsOnVideoLink(link)
+
 def checkValue(event):
     if (cb.get() == "Фото"):
         linkLabel.pack_forget()
@@ -180,7 +199,7 @@ cb.pack(anchor=tk.N, side='top', pady=10)
 cb.bind("<<ComboboxSelected>>", checkValue)
 
 # BUTTON
-btn = ttk.Button(window, text="Выбрать", width=44)
+btn = ttk.Button(window, text="Выбрать", command=getRes, width=44)
 btn.pack(anchor=tk.N, side='top', pady=10)
 
 
